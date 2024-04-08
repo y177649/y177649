@@ -1,4 +1,4 @@
-<h1 align="center">Hello!</h1>
+<h1 align="center">[Hello!](https://discord.com/channels/@me/1226083870416568395)</h1>
 
 <p align="left">
 </p>
