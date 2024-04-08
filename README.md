@@ -1,4 +1,4 @@
-<h1 align="center"[>[Hello!](https://discord.com/channels/@me/1226083870416568395)](https://chat.openai.com/share/81cfbff1-8509-4565-a999-0571811eec48)</h1>
+<h1 align="center">[Hello!](https://discord.com/channels/@me/1226083870416568395)</h1>
 
 <p align="left">
 </p>
