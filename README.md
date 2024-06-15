@@ -1,3 +1,4 @@
+```
 import bpy
 
 class OBJECT_OT_principled_texture_setup(bpy.types.Operator):
@@ -33,3 +34,4 @@ def unregister():
 
 if __name__ == "__main__":
     register()
+```
