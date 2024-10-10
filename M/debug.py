@@ -45,6 +45,22 @@ try:
 except Exception as e:
     print(f"Error selecting 'ファッション': {e}")
 
+# ステップ4: 「メンズ」を選択
+try:
+    men_option = wait.until(EC.presence_of_element_located((By.XPATH, "//option[text()='メンズ']")))
+    men_option.click()
+    time.sleep(1)  # ページが反応するのを待つ
+except Exception as e:
+    print(f"Error selecting 'メンズ': {e}")
+
+# ステップ5: 「ジャケット・アウター」を選択
+try:
+    jacket_outer_option = wait.until(EC.presence_of_element_located((By.XPATH, "//option[text()='ジャケット・アウター']")))
+    jacket_outer_option.click()
+    time.sleep(1)  # ページが反応するのを待つ
+except Exception as e:
+    print(f"Error selecting 'ジャケット・アウター': {e}")
+
 # ステップ4: 「検索する」ボタンをクリック
 try:
     search_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[text()='検索する']")))
