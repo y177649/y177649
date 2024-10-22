@@ -73,7 +73,7 @@ except Exception as e:
 # ステップ7: 検索ボックスに「barbour」を入力
 try:
     search_box = wait.until(EC.presence_of_element_located((By.XPATH, "//input[@aria-label='検索キーワードを入力']")))
-    search_box.send_keys("barbour")
+    search_box.send_keys("barbour bedale")
     time.sleep(1)
 except Exception as e:
     print(f"Error entering text into search box: {e}")
@@ -84,6 +84,27 @@ try:
     time.sleep(3)
 except Exception as e:
     print(f"Error pressing Enter key: {e}")
+
+# スクロール処理を追加 - ゆっくりスクロールして読み込みが完了するまで待つ
+scroll_pause_time = 2  # スクロール後に待つ時間（秒）
+increment_scroll = 1000  # 一回のスクロール量
+last_height = driver.execute_script("return document.body.scrollHeight")
+
+while True:
+    # ページを少しずつスクロール
+    driver.execute_script(f"window.scrollBy(0, {increment_scroll});")
+
+    # スクロール後、商品が読み込まれるまで待機
+    time.sleep(scroll_pause_time)
+
+    # 新しいページの高さを取得
+    new_height = driver.execute_script("return document.body.scrollHeight")
+
+    # ページの高さが変わらない場合、すべてのアイテムが読み込まれたと判断
+    if new_height == last_height:
+        break
+
+    last_height = new_height
 
 # 検索結果のアイテムを取得
 items = driver.find_elements(By.CLASS_NAME, "sc-bcd1c877-2.cvAXgx")
@@ -101,16 +122,9 @@ for item in items:
     except Exception as e:
         print(f"Error retrieving item URL: {e}")
 
-# デバッグ用のコード：ブラウザを開いたままにする
-try:
-    print("メルカリのサイトが開かれています。デバッグが終了したら手動でブラウザを閉じてください。")
-    while True:
-        time.sleep(10)  # 10秒ごとにループを繰り返す
-except KeyboardInterrupt:
-    print("デバッグモードを終了しました。")
-finally:
-    driver.quit()
-    print("ブラウザを閉じました。")
+# ブラウザを閉じる
+driver.quit()
+print("ブラウザを閉じました。")
 
 # 取得したURLをCSVファイルに保存
 df = pd.DataFrame(item_urls, columns=['商品URL'])
