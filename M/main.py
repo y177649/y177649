@@ -8,6 +8,9 @@ from selenium.webdriver.common.keys import Keys
 import time
 import pandas as pd
 
+# デバッグモードの設定
+debug_mode = False  # Trueにすると手動でブラウザを閉じるモードになる
+
 options = Options()
 options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
@@ -62,15 +65,23 @@ try:
 except Exception as e:
     print(f"Error selecting 'ジャケット・アウター': {e}")
 
-# ステップ6: 検索アイコンをクリック
+# ステップ6: 販売状況の「絞り込み」ボタンをクリック（画像1の部分）
 try:
-    search_icon = wait.until(EC.element_to_be_clickable((By.CLASS_NAME, "icon__386b8057")))
-    search_icon.click()
+    sales_status_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//div[@data-testid='販売状況']//button[@id='accordion_button']")))
+    sales_status_button.click()
     time.sleep(1)
 except Exception as e:
-    print(f"Error clicking search icon: {e}")
+    print(f"Error clicking '販売状況' accordion button: {e}")
 
-# ステップ7: 検索ボックスに「barbour」を入力
+# ステップ7: 「売り切れのみ」のチェックボックスをクリック（画像2の部分）
+try:
+    sold_out_checkbox = wait.until(EC.element_to_be_clickable((By.XPATH, "//input[@value='sold_out|trading']")))
+    sold_out_checkbox.click()
+    time.sleep(1)
+except Exception as e:
+    print(f"Error clicking '売り切れのみ' checkbox: {e}")
+
+# ステップ8: 検索ボックスに「barbour」を入力
 try:
     search_box = wait.until(EC.presence_of_element_located((By.XPATH, "//input[@aria-label='検索キーワードを入力']")))
     search_box.send_keys("barbour bedale")
@@ -78,7 +89,7 @@ try:
 except Exception as e:
     print(f"Error entering text into search box: {e}")
 
-# ステップ8: エンターキーを押して検索を実行
+# ステップ9: エンターキーを押して検索を実行
 try:
     search_box.send_keys(Keys.ENTER)
     time.sleep(3)
@@ -122,9 +133,18 @@ for item in items:
     except Exception as e:
         print(f"Error retrieving item URL: {e}")
 
-# ブラウザを閉じる
-driver.quit()
-print("ブラウザを閉じました。")
+# デバッグモードでなければブラウザを自動で閉じる
+if not debug_mode:
+    driver.quit()
+    print("ブラウザを閉じました。")
+else:
+    print("デバッグモード: 手動でブラウザを閉じてください。")
+    try:
+        # 手動で停止させるために無限ループを設定
+        while True:
+            time.sleep(10)
+    except KeyboardInterrupt:
+        print("デバッグモードを終了しました。")
 
 # 取得したURLをCSVファイルに保存
 df = pd.DataFrame(item_urls, columns=['商品URL'])
