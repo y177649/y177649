@@ -1,3 +1,4 @@
+import json
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
@@ -9,7 +10,7 @@ import time
 import pandas as pd
 
 # デバッグモードの設定
-debug_mode = False  # Trueにすると手動でブラウザを閉じるモードになる
+debug_mode = True  # Trueにすると手動でブラウザを閉じるモードになる
 
 options = Options()
 options.add_argument('--no-sandbox')
@@ -18,6 +19,14 @@ options.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) Apple
 
 driver_path = "C:/chromedriver.exe"
 driver = webdriver.Chrome(service=Service(driver_path), options=options)
+
+# JSONファイルからカテゴリーと検索キーワードを読み込む
+with open('categories.json', 'r', encoding='utf-8') as file:
+    data = json.load(file)
+    main_category = data["main_category"]
+    sub_category = data["sub_category"]
+    sub_sub_category = data["sub_sub_category"]
+    search_keyword = data["search_keyword"]
 
 # メルカリの検索ページを開く
 url = 'https://jp.mercari.com/search'
@@ -32,7 +41,23 @@ try:
 except Exception as e:
     print(f"Error clicking filter button: {e}")
 
-# ステップ2: 「カテゴリー」メニューを開く
+# ステップ2: 「おすすめ順」を選択する（デフォルトの選択）
+try:
+    sort_select_element = wait.until(EC.presence_of_element_located((By.NAME, "sortOrder")))
+    sort_select = Select(sort_select_element)
+    sort_select.select_by_value("score:desc")  # おすすめ順を選択
+    time.sleep(1)
+except Exception as e:
+    print(f"Error selecting 'おすすめ順': {e}")
+
+# ステップ3: 「新しい順」を選択する
+try:
+    sort_select.select_by_value("created_time:desc")  # 新しい順を選択
+    time.sleep(1)
+except Exception as e:
+    print(f"Error selecting '新しい順': {e}")
+
+# ステップ4: 「カテゴリー」メニューを開く
 try:
     category_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//li[@data-testid='category_id']//button[@id='accordion_button']")))
     category_button.click()
@@ -40,32 +65,32 @@ try:
 except Exception as e:
     print(f"Error clicking category accordion button: {e}")
 
-# ステップ3: 「ファッション」を選択
+# ステップ5: JSONから読み込んだメインカテゴリーを選択
 try:
     select_element = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "select__da4764db")))
     select = Select(select_element)
-    select.select_by_visible_text("ファッション")
+    select.select_by_visible_text(main_category)  # JSONファイルから読み込み
     time.sleep(1)
 except Exception as e:
-    print(f"Error selecting 'ファッション': {e}")
+    print(f"Error selecting '{main_category}': {e}")
 
-# ステップ4: 「メンズ」を選択
+# ステップ6: JSONから読み込んだサブカテゴリーを選択
 try:
-    men_option = wait.until(EC.presence_of_element_located((By.XPATH, "//option[text()='メンズ']")))
-    men_option.click()
+    sub_category_option = wait.until(EC.presence_of_element_located((By.XPATH, f"//option[text()='{sub_category}']")))
+    sub_category_option.click()
     time.sleep(1)
 except Exception as e:
-    print(f"Error selecting 'メンズ': {e}")
+    print(f"Error selecting '{sub_category}': {e}")
 
-# ステップ5: 「ジャケット・アウター」を選択
+# ステップ7: JSONから読み込んだサブサブカテゴリーを選択
 try:
-    jacket_outer_option = wait.until(EC.presence_of_element_located((By.XPATH, "//option[text()='ジャケット・アウター']")))
-    jacket_outer_option.click()
+    sub_sub_category_option = wait.until(EC.presence_of_element_located((By.XPATH, f"//option[text()='{sub_sub_category}']")))
+    sub_sub_category_option.click()
     time.sleep(1)
 except Exception as e:
-    print(f"Error selecting 'ジャケット・アウター': {e}")
+    print(f"Error selecting '{sub_sub_category}': {e}")
 
-# ステップ6: 販売状況の「絞り込み」ボタンをクリック（画像1の部分）
+# ステップ8: 販売状況の「絞り込み」ボタンをクリック
 try:
     sales_status_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//div[@data-testid='販売状況']//button[@id='accordion_button']")))
     sales_status_button.click()
@@ -73,7 +98,7 @@ try:
 except Exception as e:
     print(f"Error clicking '販売状況' accordion button: {e}")
 
-# ステップ7: 「売り切れのみ」のチェックボックスをクリック（画像2の部分）
+# ステップ9: 「売り切れのみ」のチェックボックスをクリック
 try:
     sold_out_checkbox = wait.until(EC.element_to_be_clickable((By.XPATH, "//input[@value='sold_out|trading']")))
     sold_out_checkbox.click()
@@ -81,15 +106,15 @@ try:
 except Exception as e:
     print(f"Error clicking '売り切れのみ' checkbox: {e}")
 
-# ステップ8: 検索ボックスに「barbour」を入力
+# ステップ10: 検索ボックスに JSON から読み込んだキーワードを入力
 try:
     search_box = wait.until(EC.presence_of_element_located((By.XPATH, "//input[@aria-label='検索キーワードを入力']")))
-    search_box.send_keys("barbour bedale")
+    search_box.send_keys(search_keyword)  # JSONファイルから読み込み
     time.sleep(1)
 except Exception as e:
     print(f"Error entering text into search box: {e}")
 
-# ステップ9: エンターキーを押して検索を実行
+# ステップ11: エンターキーを押して検索を実行
 try:
     search_box.send_keys(Keys.ENTER)
     time.sleep(3)
