@@ -11,8 +11,15 @@ import pandas as pd
 import os
 from datetime import datetime
 
-# デバッグモードの設定
-debug_mode = True  # Trueにすると手動でブラウザを閉じるモードになる
+# JSONファイルからカテゴリー、検索キーワード、ページ数、デバッグモードを読み込む
+with open('categories.json', 'r', encoding='utf-8') as file:
+    data = json.load(file)
+    main_category = data["main_category"]
+    sub_category = data["sub_category"]
+    sub_sub_category = data["sub_sub_category"]
+    search_keyword = data["search_keyword"]
+    max_pages = data["max_pages"]  # ページ数をJSONから取得
+    debug_mode = data["debug_mode"]  # デバッグモードをJSONから取得
 
 options = Options()
 options.add_argument('--no-sandbox')
@@ -21,14 +28,6 @@ options.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) Apple
 
 driver_path = "C:/chromedriver.exe"
 driver = webdriver.Chrome(service=Service(driver_path), options=options)
-
-# JSONファイルからカテゴリーと検索キーワードを読み込む
-with open('categories.json', 'r', encoding='utf-8') as file:
-    data = json.load(file)
-    main_category = data["main_category"]
-    sub_category = data["sub_category"]
-    sub_sub_category = data["sub_sub_category"]
-    search_keyword = data["search_keyword"]
 
 # メルカリの検索ページを開く
 url = 'https://jp.mercari.com/search'
@@ -126,9 +125,8 @@ except Exception as e:
 # 検索結果のURLを全て取得する処理
 item_urls = []  # URLを保存するリスト
 page = 1  # ページ番号
-max_pages = 2  # 最大ページ数を設定
 
-while page <= max_pages:
+while page <= max_pages:  # JSONから取得したmax_pagesに従ってループ
     print(f"Scraping page {page}...")
     
     # スクロール処理を追加 - ゆっくりスクロールして読み込みが完了するまで待つ

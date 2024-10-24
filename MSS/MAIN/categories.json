@@ -2,5 +2,7 @@
     "main_category": "ファッション",
     "sub_category": "メンズ",
     "sub_sub_category": "ジャケット・アウター",
-    "search_keyword": "barbour bedale"
+    "search_keyword": "barbour bedale",
+    "max_pages": 5,
+    "debug_mode": false
 }
