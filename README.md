@@ -4,20 +4,17 @@
 
 ## My Tech Stack
 
+### CMS
+![WordPress](https://img.shields.io/badge/-WordPress-21759B?style=flat&logo=wordpress&logoColor=white)
+
 ### Frontend
 ![HTML5](https://img.shields.io/badge/-HTML5-E34F26?style=flat&logo=html5&logoColor=white)
-![Jinja2](https://img.shields.io/badge/-Jinja2-B41717?style=flat&logo=jinja&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/-Tailwind%20CSS-06B6D4?style=flat&logo=tailwindcss&logoColor=white)
+![CSS3](https://img.shields.io/badge/-CSS3-1572B6?style=flat&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/-JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)
 
-### Backend & Frameworks
+### Backend
 ![Python](https://img.shields.io/badge/-Python-3776AB?style=flat&logo=python&logoColor=white)
-![Flask](https://img.shields.io/badge/-Flask-000000?style=flat&logo=flask&logoColor=white)
 
-### Database
-![SQLite](https://img.shields.io/badge/-SQLite-003B57?style=flat&logo=sqlite&logoColor=white)
-
-### Authentication
-![Flask-Login](https://img.shields.io/badge/-Flask%20Login-000?style=flat&logo=python&logoColor=white)
-
-### Diagramming
-![Mermaid](https://img.shields.io/badge/-Mermaid-64B587?style=flat&logo=mermaid&logoColor=white)
+### AI & Tools
+![Claude Code](https://img.shields.io/badge/-Claude%20Code-D97757?style=flat&logo=anthropic&logoColor=white)
+![Gemini](https://img.shields.io/badge/-Gemini-8E75B2?style=flat&logo=googlegemini&logoColor=white)
