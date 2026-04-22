@@ -15,6 +15,8 @@
 ### Backend
 ![Python](https://img.shields.io/badge/-Python-3776AB?style=flat&logo=python&logoColor=white)
 
-### AI & Tools
-![Claude Code](https://img.shields.io/badge/-Claude%20Code-D97757?style=flat&logo=anthropic&logoColor=white)
+### AI Tools
+![Claude](https://img.shields.io/badge/-Claude-D97757?style=flat&logo=anthropic&logoColor=white)
 ![Gemini](https://img.shields.io/badge/-Gemini-8E75B2?style=flat&logo=googlegemini&logoColor=white)
+![Cursor](https://img.shields.io/badge/-Cursor-111111?style=flat)
+![Goose](https://img.shields.io/badge/-Goose-2E8B57?style=flat)
